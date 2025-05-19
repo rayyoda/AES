@@ -24,7 +24,9 @@ Version 3 onwards:
 
 Additonal parameter -ScriptParameters is addded for the New-RunAesFile Cmdlet.  It will accept a Hashtable object that will be included in the runtime process.
 
-Version 4: This is a major change from Version 3. 
+Version 4: 
+
+This is a major change from Version 3. In this version New-AesKey is of no consequence and is here for imformational purposes only. The 'passphrase' is all you need. This version includes file tamper protection.
 
 New-AesKey -Passphrase <string> [-OutputSalt] 
 
