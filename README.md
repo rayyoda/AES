@@ -34,7 +34,7 @@ New-RunAesFile
 
 ## Changes since stable release.
 
-**Version 3 onwards**:
+**Version 3**:
 
 An additonal parameter **-ScriptParameters** is addded for the New-RunAesFile Cmdlet.  This parameter will accept a **Hashtable** object that will be included in the runtime process.
 
