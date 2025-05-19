@@ -9,7 +9,9 @@ Note: All versions require the .NET Framework 4.8.1
 
 All Versions have three Cmdlets:
 New-AesKey
+
 New-AesFile
+
 New-RunAesFile
 
 ## Changes since stable release
