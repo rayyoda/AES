@@ -33,4 +33,4 @@ New-AesFile [-InputFile] <string> -Passphrase <string>
 New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <hashtable>] 
 
 
-This software is provided "AS IS" with no warranties. Use at your own risk.
+### This software is provided "AS IS" with no assistance or warranties. Use at your own risk.
