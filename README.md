@@ -1,16 +1,30 @@
 # AES Encryption and Decryption for PowerShell 5.1
 
-Version: 1.0.0.1 - Abandoned
+**Why?**
 
-Version: 2.0.0.1 - Stable
+Of the literally hundreds of similar options out there, none could achieve what I wanted: Decrypt the file and execute along with dynamic parameters in memory without ever having to touch the disk.
 
-Version: 3.0.0.1 - Beta
+**Programming Language**
 
-Version: 4.0.0.1 - Beta
+C# using Visual Studio 2019 with .NET Framework 4.8.1 
 
-Note: All versions require the .NET Framework 4.8.1
+The source code is intentionally not published on GitHub.  If I did that, it defeats the purpose of Encryption and Decryption anyway.  While it can be cracked, why make it easy for someone?
 
-All Versions have three Cmdlets:
+**Operating Systems**
+
+Tested on Windows 10 and 11 only.
+
+**Versions:**
+
+1.0.0.1 - Abandoned
+
+2.0.0.1 - Stable
+
+3.0.0.1 - Beta
+
+4.0.0.1 - Beta
+
+**Cmdlets:**
 
 New-AesKey
 
@@ -20,13 +34,13 @@ New-RunAesFile
 
 ## Changes since stable release.
 
-Version 3 onwards:
+**Version 3**:
 
-Additonal parameter -ScriptParameters is addded for the New-RunAesFile Cmdlet.  It will accept a Hashtable object that will be included in the runtime process.
+An additonal parameter **-ScriptParameters** is addded for the New-RunAesFile Cmdlet.  This parameter will accept a **Hashtable** object that will be included in the runtime process.
 
-Version 4: 
+**Version 4**: 
 
-This is a major change from Version 3. In this version New-AesKey is of no consequence and is here for imformational purposes only. The 'passphrase' is all you need. This version includes file tamper protection.
+This is a major change from Version 3. In this version, New-AesKey is of no real consequence and is included here for imformational purposes only. The '**Passphrase**' is all you need for Encryption and Decryption. This version also includes file tamper protection that is checked first at runtime.
 
 New-AesKey -Passphrase <string> [-OutputSalt] 
 
@@ -35,4 +49,4 @@ New-AesFile [-InputFile] <string> -Passphrase <string>
 New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <hashtable>] 
 
 
-### This software is provided "AS IS" with no assistance or warranties. Use at your own risk.
+### This software is provided "AS IS" with no assistance or warranties for advanced PowerShell Coders. Use at your own risk.
