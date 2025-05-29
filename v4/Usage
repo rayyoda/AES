@@ -1,0 +1,59 @@
+Here’s how to use the cmdlets in a workflow.
+
+1. Generate a Key (Optional)
+Use New-AesKey to derive an AES key and salt for testing or inspection. This is optional, as New-AesFile handles key derivation internally.
+
+PowerShell:
+$passphrase = "fandango123"
+$key = New-AesKey -Passphrase $passphrase -OutputSalt -Verbose
+$salt = $key[1] # Second output is the salt
+Write-Host "Key: $([Convert]::ToBase64String($key[0]))"
+Write-Host "Salt: $([Convert]::ToBase64String($salt))"
+
+Output: The key and salt as byte arrays.
+Note: You don’t need to store the key, as it’s re-derived from the passphrase and salt during decryption.
+
+
+2. Encrypt a PowerShell Script
+Use New-AesFile to encrypt a PowerShell script file.
+
+PowerShell:
+# Create a sample script
+$scriptContent = @"
+Write-Host "Hello, secure world!"
+Get-Date
+"@
+Set-Content -Path ".\script.ps1" -Value $scriptContent
+
+# Encrypt the script
+New-AesFile -InputFile ".\script.ps1" -Passphrase "supersecret123" -Verbose
+
+Input: A .ps1 file (e.g., script.ps1).
+Output: An encrypted file (e.g., script.aes) containing  EncryptedScript, HMAC, Salt, IV.
+Ensure the passphrase is securely provided to the console (e.g., via a secure API or manual input).
+
+3. Decrypt and Execute in the Cloud Console
+Use New-RunAesFile to decrypt and execute the script in memory.
+
+# In the cloud console
+Import-Module rayoda
+New-RunAesFile -InputFile ".\script.aes" -Passphrase "fandango123" -Verbose
+
+Input: The encrypted .aes file and the passphrase.
+Output: The script’s output (e.g., console messages from Write-Host).
+
+Behavior:
+Reads the HMAC, salt, IV, and encrypted script.
+Derives the AES key using PBKDF2.
+Decrypts the script in memory.
+Verifies the HMAC to ensure integrity.
+Executes the script in memory.
+
+
+Example Output
+For the sample script above:
+
+VERBOSE: Decrypting and executing script...
+Hello, secure world!
+Saturday, May 17, 2025 7:53:00 AM
+
