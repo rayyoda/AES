@@ -42,11 +42,12 @@ An additonal parameter **-ScriptParameters** is addded for the New-RunAesFile Cm
 
 This is a major change from Version 3. In this version, New-AesKey is of no real consequence and is included here for imformational purposes only. The '**Passphrase**' is all you need for Encryption and Decryption. This version also includes file tamper protection that is checked first at runtime.
 
-New-AesKey -Passphrase <string> [-OutputSalt] 
+New-AesKey -Passphrase <string> [-OutputSalt] _(This is optional)_
 
 New-AesFile [-InputFile] <string> -Passphrase <string> 
 
 New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <hashtable>] 
 
+**Note**:  There is a sample workflow located in the v4 level.
 
 ### This software is provided "AS IS" with no assistance or warranties for advanced PowerShell Coders. Use at your own risk.
