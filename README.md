@@ -8,7 +8,7 @@ Of the literally hundreds of similar options out there, none could achieve what 
 
 C# using Visual Studio 2019 with .NET Framework 4.8.1 
 
-The source code is intentionally not published on GitHub.  If I did that, it defeats the purpose of Encryption and Decryption anyway.  While it can be cracked, why make it easy for someone?
+The source code is intentionally not published on GitHub.  If I did that, it defeats the purpose of Encryption and Decryption anyway.  While it can be cracked, why make it easy?
 
 **Operating Systems**
 
