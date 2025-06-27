@@ -18,11 +18,11 @@ Tested on Windows 10 and 11 only.
 
 1.0.0.1 - Abandoned
 
-2.0.0.1 - Stable
+2.0.0.1 - Support ended
 
-3.0.0.1 - Beta
+3.0.0.1 - Support ended
 
-4.0.0.1 - Beta
+4.0.0.1 - Stable
 
 **Cmdlets:**
 
