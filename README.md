@@ -18,11 +18,13 @@ Tested on Windows 10 and 11 only.
 
 1.0.0.1 - Abandoned
 
-2.0.0.1 - Support ended
+2.0.0.1 - eos
 
-3.0.0.1 - Support ended
+3.0.0.1 - eos
 
 4.0.0.1 - Stable
+
+5.0.0.1 - Current
 
 **Cmdlets:**
 
@@ -47,6 +49,14 @@ New-AesKey -Passphrase <string> [-OutputSalt] _(This is optional)_
 New-AesFile [-InputFile] <string> -Passphrase <string> 
 
 New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <hashtable>] 
+
+**Version 5**: 
+
+Major upgrade from Version 4.0.0.1. An additonal parameter -Credential is included.  A valid PowerShell Credential Object is required with this parameter. For this to execute, Identity Impersonation is used internally. Do NOT use this parameter if policies are in place that prevent Identity Impersonation.
+
+New-AesFile [-InputFile] <string> -Passphrase <string> 
+
+New-RunAesFile [-InputFile] <string> -Passphrase <string> [-Credential <pscredential>] [-ScriptParameters <hashtable>] 
 
 **Note**:  There is a sample workflow located in the v4 level.
 
