@@ -38,8 +38,10 @@ Use New-RunAesFile to decrypt and execute the script in memory.
 # In the cloud console
 Import-Module rayoda
 New-RunAesFile -InputFile ".\script.aes" -Passphrase "fandango123" -Verbose
+OR
+New-RunAesFile -InputFile ".\script.aes" -Passphrase "fandango123" -Credential $Credential -Verbose
 
-Input: The encrypted .aes file and the passphrase.
+Input: The encrypted .aes file and the passphrase. If using the -Credential parameter, the $Credential object must be available.
 Output: The script’s output (e.g., console messages from Write-Host).
 
 Behavior:
