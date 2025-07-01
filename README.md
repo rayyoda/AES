@@ -52,7 +52,7 @@ New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <ha
 
 **Version 5**: 
 
-Major upgrade from Version 4.0.0.1. An additonal parameter -Credential is included.  A valid PowerShell **Credential** Object is required with this parameter. For this to execute, Identity Impersonation is used internally. Do NOT use this parameter if policies are in place that prevent Identity Impersonation.
+Major upgrade from Version 4.0.0.1. An additonal parameter -Credential is included.  A valid PowerShell **Credential** Object is required with this parameter. For this to execute, Identity Impersonation is used internally. Do NOT use this parameter if policies are in place preventing Identity Impersonation.
 
 New-AesFile [-InputFile] <string> -Passphrase <string> 
 
