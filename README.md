@@ -60,4 +60,4 @@ New-RunAesFile [-InputFile] <string> -Passphrase <string> [-Credential <pscreden
 
 **Note**:  There is a sample workflow located in the v4 level.
 
-### This software is provided "AS IS" with no assistance or warranties for advanced PowerShell Coders. Use at your own risk.
+### This software is provided "AS IS" for advanced PowerShell Coders with no assistance or warranties provided. Use at your own risk.
