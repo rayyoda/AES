@@ -24,7 +24,9 @@ Tested on Windows 10 and 11 only.
 
 4.0.0.1 - Stable
 
-5.0.0.1 - Current
+5.0.0.1 - Stable
+
+6.0.0.1 - Current
 
 **Cmdlets:**
 
@@ -57,6 +59,10 @@ Major upgrade from Version 4.0.0.1. An additonal parameter -Credential is includ
 New-AesFile [-InputFile] <string> -Passphrase <string> 
 
 New-RunAesFile [-InputFile] <string> -Passphrase <string> [-Credential <pscredential>] [-ScriptParameters <hashtable>] 
+
+**Version 6**: 
+
+Additional verbose. No changes in usage.
 
 **Note**:  There is a sample workflow located in the v5 level.
 
