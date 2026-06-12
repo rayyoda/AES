@@ -59,13 +59,13 @@ New-AesKey
 Derives an AES key from a passphrase and random salt.
 
 New-AesKey -Passphrase <string> [-OutputSalt]
-Outputs:
 
-PowerShell
+Outputs:
 @{
     Key  = [byte[]]
     Salt = [byte[]]  # null unless -OutputSalt is used
 }
+
 New-RunAesFile
 Decrypts and executes an AES‑encrypted script entirely in memory.
 
