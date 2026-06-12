@@ -41,13 +41,7 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 ✔ Logging suppression (default)
     To prevent decrypted script content from being logged, the module temporarily disables:
 
-    Script Block Logging
-    
-    Module Logging
-    
-    Transcription
-
-    All original registry values are restored after execution.
+    Events and almost all PowerShell Logs.
 
     Use -PreservePSLogging to leave logging intact.
 
@@ -165,13 +159,7 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
     Logging suppression prevents script content from appearing in:
 
-    Event Logs
-    
-    Script Block Logs
-    
-    Module Logs
-
-    Transcription logs
+        Events and almost all PowerShell Logs
 
     HMAC verification prevents tampering.
 
