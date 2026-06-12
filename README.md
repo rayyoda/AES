@@ -115,22 +115,26 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 3. Encrypt it
 
     New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
+   
     Produces TestScript.aes.
 
-4. Run with logging suppression (default)
+5. Run with logging suppression (default)
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
 
     Expected:
+
     VERBOSE: PowerShell logging disabled for secure execution.
+
     Hello from inside the encrypted script!
+
     User running this script: Ray
 
-5. Run with logging preserved
+7. Run with logging preserved
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
-6. Encrypt credentials
+8. Encrypt credentials
 
    Create creds.txt:
 
@@ -140,7 +144,7 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
     New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
 
-7. Run using encrypted credentials
+9. Run using encrypted credentials
 
     New-RunAesFile `
         -InputFile .\TestScript.aes `
