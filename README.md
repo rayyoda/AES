@@ -193,7 +193,7 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 - **6.0.0.1** – Stable  
 - **7.0.0.1** – Current
 
-⚠ ## Disclaimer
+## ⚠ Disclaimer
 
 **This software is provided “AS IS” with no warranties or support.**
 **Use at your own risk.**
