@@ -14,11 +14,8 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 Scripts are encrypted into .aes files using:
 
 PBKDF2‑SHA256 key derivation
-
 AES‑256‑CBC encryption
-
 HMAC‑SHA256 integrity protection
-
 UTF‑8 stable encoding
 
 ✔ In‑memory decryption & execution
