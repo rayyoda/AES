@@ -11,29 +11,29 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 **Features**
 
 ✔ AES‑256 encryption of PowerShell scripts
-Scripts are encrypted into .aes files using:
+    Scripts are encrypted into .aes files using:
 
-PBKDF2‑SHA256 key derivation
-AES‑256‑CBC encryption
-HMAC‑SHA256 integrity protection
-UTF‑8 stable encoding
+    PBKDF2‑SHA256 key derivation
+    AES‑256‑CBC encryption
+    HMAC‑SHA256 integrity protection
+    UTF‑8 stable encoding
 
 ✔ In‑memory decryption & execution
-The decrypted script never touches disk.
-Execution is performed via System.Management.Automation.PowerShell.
+    The decrypted script never touches disk.
+    Execution is performed via System.Management.Automation.PowerShell.
 
 ✔ Optional runtime parameters
-Pass a hashtable of parameters directly into the decrypted script.
+    Pass a hashtable of parameters directly into the decrypted script.
 
 ✔ Optional credential impersonation
 
-Use:
+    Use:
 
--Credential (PSCredential), or
+    -Credential (PSCredential), or
 
--CredentialAesFile (AES‑encrypted username|password payload)
+    -CredentialAesFile (AES‑encrypted username|password payload)
 
-Execution occurs under the impersonated identity using LogonUser + DuplicateToken.
+    Execution occurs under the impersonated identity using LogonUser + DuplicateToken.
 
 ✔ Logging suppression (default)
     To prevent decrypted script content from being logged, the module temporarily disables:
