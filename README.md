@@ -104,21 +104,20 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
 **End‑to‑End Test Flow (v7)**
 
-1. Create a test script
+**1. Create a test script**
 
     "Hello from inside the encrypted script!"
-   
     "User running this script: $([Environment]::UserName)"
 
     Save as TestScript.ps1.
 
-3. Encrypt it
+**3. Encrypt it**
 
     New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
    
     Produces TestScript.aes.
 
-5. Run with logging suppression (default)
+**5. Run with logging suppression (default)**
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
 
@@ -130,11 +129,11 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
     User running this script: Ray
 
-7. Run with logging preserved
+**7. Run with logging preserved**
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
-8. Encrypt credentials
+**8. Encrypt credentials**
 
    Create creds.txt:
 
@@ -144,7 +143,7 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
     New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
 
-9. Run using encrypted credentials
+**9. Run using encrypted credentials**
 
     New-RunAesFile `
         -InputFile .\TestScript.aes `
