@@ -1,6 +1,6 @@
-**AES Encryption & In‑Memory Execution for PowerShell 5.1**
+****AES Encryption & In‑Memory Execution for PowerShell 5.1**
 
-**Version 7.0.0.1**
+**Version 7.0.0.1****
 
 A compact, security‑focused toolkit for encrypting PowerShell scripts and executing them entirely in memory — without writing decrypted content to disk and without exposing code through default PowerShell logging.
 
@@ -152,8 +152,8 @@ username|password
 
 Use only in environments where impersonation is permitted.
 
-**⚠ Disclaimer**
+****⚠ Disclaimer**
 **This software is provided “AS IS” with no warranties or support.
 Use at your own risk.
 
-Designed for advanced PowerShell users who understand the security implications.**
+Designed for advanced PowerShell users who understand the security implications.****
