@@ -91,8 +91,6 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 
     Suppresses logging unless -PreservePSLogging is specified
 
-    Restores all registry values after execution
-
 **End‑to‑End Test Flow (v7)**
 
 **1. Create a test script**
