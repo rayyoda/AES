@@ -1,69 +1,181 @@
-# AES Encryption and Decryption for PowerShell 5.1
+AES Encryption & In‑Memory Execution for PowerShell 5.1
+Version 7.0.0.1
+A compact, security‑focused toolkit for encrypting PowerShell scripts and executing them entirely in memory — without writing decrypted content to disk and without exposing code through default PowerShell logging.
 
-**Why?**
+“Decrypt the file and execute along with dynamic parameters in memory without ever having to touch the disk.”
 
-Of the literally hundreds of similar options out there, none could achieve what I wanted: Decrypt the file and execute along with dynamic parameters in memory without ever having to touch the disk.
+Built for advanced PowerShell users who need controlled, tamper‑resistant, disk‑less execution.
 
-**Programming Language**
+🚀 Features
+✔ AES‑256 encryption of PowerShell scripts
+Scripts are encrypted into .aes files using:
 
-C# using Visual Studio 2019 with .NET Framework 4.8.1 
+PBKDF2‑SHA256 key derivation
 
-The source code is intentionally not published on GitHub.  If I did that, it defeats the purpose of Encryption and Decryption anyway.  While it can be cracked, why make it easy?
+AES‑256‑CBC encryption
 
-**Operating Systems**
+HMAC‑SHA256 integrity protection
 
-Tested on Windows 10 and 11 only.
+UTF‑8 stable encoding
 
-**Versions:**
+✔ In‑memory decryption & execution
+The decrypted script never touches disk.
+Execution is performed via System.Management.Automation.PowerShell.
 
-1.0.0.1 - Abandoned
+✔ Optional runtime parameters
+Pass a hashtable of parameters directly into the decrypted script.
 
-2.0.0.1 - eos
+✔ Optional credential impersonation
+Use:
 
-3.0.0.1 - eos
+-Credential (PSCredential), or
 
-4.0.0.1 - Stable
+-CredentialAesFile (AES‑encrypted username|password payload)
 
-5.0.0.1 - Stable
+Execution occurs under the impersonated identity using LogonUser + DuplicateToken.
 
-6.0.0.1 - Current
+✔ Logging suppression (default)
+To prevent decrypted script content from being logged, the module temporarily disables:
 
-**Cmdlets:**
+Script Block Logging
 
-New-AesKey
+Module Logging
 
+Transcription
+
+All original registry values are restored after execution.
+
+Use -PreservePSLogging to leave logging intact.
+
+✔ Tamper protection
+HMAC verification ensures the encrypted file has not been modified.
+
+🧩 Cmdlets
 New-AesFile
+Encrypts a PowerShell script into a .aes file.
 
+powershell
+New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
+New-AesKey
+Derives an AES key from a passphrase and random salt.
+
+powershell
+New-AesKey -Passphrase <string> [-OutputSalt]
+Outputs:
+
+powershell
+@{
+    Key  = [byte[]]
+    Salt = [byte[]]  # null unless -OutputSalt is used
+}
 New-RunAesFile
+Decrypts and executes an AES‑encrypted script entirely in memory.
 
-## Changes since stable release.
+powershell
+New-RunAesFile `
+    -InputFile <string> `
+    -Passphrase <string> `
+    [-ScriptParameters <hashtable>] `
+    [-Credential <pscredential>] `
+    [-CredentialAesFile <string>] `
+    [-PreservePSLogging] `
+    [-BasePath <string>] `
+    [-Verbose]
+Key behaviors
 
-**Version 3**:
+Decrypts [HMAC][Salt][IV][Ciphertext]
 
-An additonal parameter **-ScriptParameters** is addded for the New-RunAesFile Cmdlet.  This parameter will accept a **Hashtable** object that will be included in the runtime process.
+Verifies HMAC before execution
 
-**Version 4**: 
+Executes in current context or impersonated context
 
-This is a major change from Version 3. In this version, New-AesKey is of no real consequence and is included here for imformational purposes only. The '**Passphrase**' is all you need for Encryption and Decryption. This version also includes file tamper protection that is checked first at runtime.
+Suppresses logging unless -PreservePSLogging is specified
 
-New-AesKey -Passphrase <string> [-OutputSalt] _(This is optional)_
+Restores all registry values after execution
 
-New-AesFile [-InputFile] <string> -Passphrase <string> 
+📦 Installation
+Compile the C# project in Visual Studio 2019 targeting:
 
-New-RunAesFile [-InputFile] <string> -Passphrase <string> [-ScriptParameters <hashtable>] 
+.NET Framework 4.8.1
 
-**Version 5**: 
+Windows PowerShell 5.1
 
-Major upgrade from Version 4.0.0.1. An additonal parameter -Credential is included.  A valid PowerShell **Credential** Object is required with this parameter. For this to execute, Identity Impersonation is used internally. Do NOT use this parameter if policies are in place preventing Identity Impersonation.
+Copy the resulting DLL into a PowerShell module folder:
 
-New-AesFile [-InputFile] <string> -Passphrase <string> 
+Code
+Documents\WindowsPowerShell\Modules\SecureScripting\
+Include:
 
-New-RunAesFile [-InputFile] <string> -Passphrase <string> [-Credential <pscredential>] [-ScriptParameters <hashtable>] 
+Code
+SecureScripting.dll
+SecureScripting.psd1
+🧪 End‑to‑End Test Flow (v7)
+1. Create a test script
+powershell
+"Hello from inside the encrypted script!"
+"User running this script: $([Environment]::UserName)"
+Save as TestScript.ps1.
 
-**Version 6**: 
+2. Encrypt it
+powershell
+New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
+Produces TestScript.aes.
 
-Additional verbose. No changes in usage.
+3. Run with logging suppression (default)
+powershell
+New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
+Expected:
 
-**Note**:  There is a sample workflow located in the v5 level.
+Code
+VERBOSE: PowerShell logging disabled for secure execution.
+Hello from inside the encrypted script!
+User running this script: Ray
+4. Run with logging preserved
+powershell
+New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
+5. Encrypt credentials
+Create creds.txt:
 
-### This software is provided "AS IS" for advanced PowerShell Coders with no assistance or warranties provided. Use at your own risk.
+Code
+DOMAIN\User|SuperSecretPassword
+Encrypt:
+
+powershell
+New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
+6. Run using encrypted credentials
+powershell
+New-RunAesFile `
+    -InputFile .\TestScript.aes `
+    -Passphrase "P@ssw0rd!" `
+    -CredentialAesFile .\Creds.aes `
+    -Verbose
+Expected:
+
+Code
+VERBOSE: Impersonating user DOMAIN\User
+Hello from inside the encrypted script!
+User running this script: User
+🛡 Security Notes
+Decrypted script content never touches disk.
+
+Logging suppression prevents script content from appearing in:
+
+Event Logs
+
+Script Block Logs
+
+Module Logs
+
+Transcription logs
+
+HMAC verification prevents tampering.
+
+Credential AES files must contain:
+username|password
+
+Use only in environments where impersonation is permitted.
+
+⚠ Disclaimer
+This software is provided “AS IS” with no warranties or support.
+Use at your own risk.
+Designed for advanced PowerShell users who understand the security implications.
