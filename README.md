@@ -1,6 +1,6 @@
-****AES Encryption & In‑Memory Execution for PowerShell 5.1**
+**AES Encryption & In‑Memory Execution for PowerShell 5.1**
 
-**Version 7.0.0.1****
+**Version 7.0.0.1**
 
 A compact, security‑focused toolkit for encrypting PowerShell scripts and executing them entirely in memory — without writing decrypted content to disk and without exposing code through default PowerShell logging.
 
@@ -101,41 +101,41 @@ Produces TestScript.aes.
 
 3. Run with logging suppression (default)
 
-New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
+    New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
 
-Expected:
-VERBOSE: PowerShell logging disabled for secure execution.
-Hello from inside the encrypted script!
-User running this script: Ray
+    Expected:
+    VERBOSE: PowerShell logging disabled for secure execution.
+    Hello from inside the encrypted script!
+    User running this script: Ray
 
 4. Run with logging preserved
 
-New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
+    New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
 5. Encrypt credentials
-Create creds.txt:
+    Create creds.txt:
 
-DOMAIN\User|SuperSecretPassword
+    DOMAIN\User|SuperSecretPassword
 
-Encrypt:
+    Encrypt:
 
-New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
+    New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
 
 6. Run using encrypted credentials
 
-New-RunAesFile `
-    -InputFile .\TestScript.aes `
-    -Passphrase "P@ssw0rd!" `
-    -CredentialAesFile .\Creds.aes `
-    -Verbose
+    New-RunAesFile `
+        -InputFile .\TestScript.aes `
+        -Passphrase "P@ssw0rd!" `
+        -CredentialAesFile .\Creds.aes `
+        -Verbose
 
-Expected:
+    Expected:
 
-VERBOSE: Impersonating user DOMAIN\User
-Hello from inside the encrypted script!
-User running this script: User
+    VERBOSE: Impersonating user DOMAIN\User
+    Hello from inside the encrypted script!
+    User running this script: User
 
-🛡 Security Notes
+**🛡 Security Notes**
 Decrypted script content never touches disk.
 
 Logging suppression prevents script content from appearing in:
@@ -152,8 +152,8 @@ username|password
 
 Use only in environments where impersonation is permitted.
 
-****⚠ Disclaimer**
-**This software is provided “AS IS” with no warranties or support.
-Use at your own risk.
+**⚠ Disclaimer**
+**This software is provided “AS IS” with no warranties or support.**
+**Use at your own risk.**
 
-Designed for advanced PowerShell users who understand the security implications.****
+**Designed for advanced PowerShell users who understand the security implications.**
