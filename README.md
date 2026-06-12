@@ -166,6 +166,35 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 
     Use only in environments where impersonation is permitted.
 
+## Environment
+
+**Programming language**
+
+- C# (.NET Framework 4.8.1)
+- Built with Visual Studio 2019
+
+**PowerShell**
+
+- Windows PowerShell 5.1 (default on Windows 10/11)
+
+**Operating systems**
+
+- Tested on:
+  - Windows 10
+  - Windows 11
+
+---
+
+## Versioning
+
+- **1.0.0.1** – Abandoned  
+- **2.0.0.1** – End of support  
+- **3.0.0.1** – End of support  
+- **4.0.0.1** – Stable  
+- **5.0.0.1** – Stable  
+- **6.0.0.1** – Stable  
+- **7.0.0.1** – Current
+
 **⚠ Disclaimer**
 **This software is provided “AS IS” with no warranties or support.**
 **Use at your own risk.**
