@@ -59,49 +59,51 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
 New-AesFile
 
-Encrypts a PowerShell script into a .aes file.
+    Encrypts a PowerShell script into a .aes file.
 
-New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
+    New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
 
 New-AesKey
-Derives an AES key from a passphrase and random salt.
 
-New-AesKey -Passphrase <string> [-OutputSalt]
+    Derives an AES key from a passphrase and random salt.
 
-Outputs:
+    New-AesKey -Passphrase <string> [-OutputSalt]
 
-@{
-    Key  = [byte[]]
-    Salt = [byte[]]  # null unless -OutputSalt is used
-}
+    Outputs:
+
+    @{
+        Key  = [byte[]]
+        Salt = [byte[]]  # null unless -OutputSalt is used
+    }
 
 New-RunAesFile
 
-Decrypts and executes an AES‑encrypted script entirely in memory.
+    Decrypts and executes an AES‑encrypted script entirely in memory.
 
-New-RunAesFile `
-    -InputFile <string> `
-    -Passphrase <string> `
-    [-ScriptParameters <hashtable>] `
-    [-Credential <pscredential>] `
-    [-CredentialAesFile <string>] `
-    [-PreservePSLogging] `
-    [-BasePath <string>] `
-    [-Verbose]
+    New-RunAesFile `
+        -InputFile <string> `
+        -Passphrase <string> `
+        [-ScriptParameters <hashtable>] `
+        [-Credential <pscredential>] `
+        [-CredentialAesFile <string>] `
+        [-PreservePSLogging] `
+        [-BasePath <string>] `
+        [-Verbose]
 
-Key behaviors:
+    Key behaviors:
 
-Decrypts [HMAC][Salt][IV][Ciphertext]
+    Decrypts [HMAC][Salt][IV][Ciphertext]
 
-Verifies HMAC before execution
+    Verifies HMAC before execution
 
-Executes in current context or impersonated context
+    Executes in current context or impersonated context
 
-Suppresses logging unless -PreservePSLogging is specified
+    Suppresses logging unless -PreservePSLogging is specified
 
-Restores all registry values after execution
+    Restores all registry values after execution
 
 End‑to‑End Test Flow (v7)
+
 1. Create a test script
 
     "Hello from inside the encrypted script!"
