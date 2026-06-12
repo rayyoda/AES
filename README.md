@@ -14,8 +14,11 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 Scripts are encrypted into .aes files using:
 
 PBKDF2‑SHA256 key derivation
+
 AES‑256‑CBC encryption
+
 HMAC‑SHA256 integrity protection
+
 UTF‑8 stable encoding
 
 ✔ In‑memory decryption & execution
@@ -28,6 +31,7 @@ Pass a hashtable of parameters directly into the decrypted script.
 ✔ Optional credential impersonation
 
 Use:
+
 -Credential (PSCredential), or
 
 -CredentialAesFile (AES‑encrypted username|password payload)
@@ -35,22 +39,26 @@ Use:
 Execution occurs under the impersonated identity using LogonUser + DuplicateToken.
 
 ✔ Logging suppression (default)
-To prevent decrypted script content from being logged, the module temporarily disables:
+    To prevent decrypted script content from being logged, the module temporarily disables:
 
-Script Block Logging
-Module Logging
-Transcription
+    Script Block Logging
+    
+    Module Logging
+    
+    Transcription
 
-All original registry values are restored after execution.
+    All original registry values are restored after execution.
 
-Use -PreservePSLogging to leave logging intact.
+    Use -PreservePSLogging to leave logging intact.
 
 ✔ Tamper protection
-HMAC verification ensures the encrypted file has not been modified.
+    
+    HMAC verification ensures the encrypted file has not been modified.
 
 **Cmdlets:**
 
 New-AesFile
+
 Encrypts a PowerShell script into a .aes file.
 
 New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
@@ -61,12 +69,14 @@ Derives an AES key from a passphrase and random salt.
 New-AesKey -Passphrase <string> [-OutputSalt]
 
 Outputs:
+
 @{
     Key  = [byte[]]
     Salt = [byte[]]  # null unless -OutputSalt is used
 }
 
 New-RunAesFile
+
 Decrypts and executes an AES‑encrypted script entirely in memory.
 
 New-RunAesFile `
@@ -80,24 +90,29 @@ New-RunAesFile `
     [-Verbose]
 
 Key behaviors:
+
 Decrypts [HMAC][Salt][IV][Ciphertext]
+
 Verifies HMAC before execution
+
 Executes in current context or impersonated context
+
 Suppresses logging unless -PreservePSLogging is specified
+
 Restores all registry values after execution
 
 End‑to‑End Test Flow (v7)
 1. Create a test script
 
-"Hello from inside the encrypted script!"
-"User running this script: $([Environment]::UserName)"
+    "Hello from inside the encrypted script!"
+    "User running this script: $([Environment]::UserName)"
 
-Save as TestScript.ps1.
+    Save as TestScript.ps1.
 
 2. Encrypt it
 
-New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
-Produces TestScript.aes.
+    New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
+    Produces TestScript.aes.
 
 3. Run with logging suppression (default)
 
@@ -113,7 +128,8 @@ Produces TestScript.aes.
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
 5. Encrypt credentials
-    Create creds.txt:
+
+   Create creds.txt:
 
     DOMAIN\User|SuperSecretPassword
 
@@ -121,7 +137,7 @@ Produces TestScript.aes.
 
     New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
 
-6. Run using encrypted credentials
+7. Run using encrypted credentials
 
     New-RunAesFile `
         -InputFile .\TestScript.aes `
@@ -136,21 +152,25 @@ Produces TestScript.aes.
     User running this script: User
 
 **🛡 Security Notes**
-Decrypted script content never touches disk.
+    
+    Decrypted script content never touches disk.
 
-Logging suppression prevents script content from appearing in:
+    Logging suppression prevents script content from appearing in:
 
-Event Logs
-Script Block Logs
-Module Logs
-Transcription logs
+    Event Logs
+    
+    Script Block Logs
+    
+    Module Logs
 
-HMAC verification prevents tampering.
+    Transcription logs
 
-Credential AES files must contain:
-username|password
+    HMAC verification prevents tampering.
 
-Use only in environments where impersonation is permitted.
+    Credential AES files must contain:
+        username|password
+
+    Use only in environments where impersonation is permitted.
 
 **⚠ Disclaimer**
 **This software is provided “AS IS” with no warranties or support.**
