@@ -107,16 +107,17 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 1. Create a test script
 
     "Hello from inside the encrypted script!"
+   
     "User running this script: $([Environment]::UserName)"
 
     Save as TestScript.ps1.
 
-2. Encrypt it
+3. Encrypt it
 
     New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
     Produces TestScript.aes.
 
-3. Run with logging suppression (default)
+4. Run with logging suppression (default)
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
 
@@ -125,11 +126,11 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
     Hello from inside the encrypted script!
     User running this script: Ray
 
-4. Run with logging preserved
+5. Run with logging preserved
 
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
-5. Encrypt credentials
+6. Encrypt credentials
 
    Create creds.txt:
 
