@@ -155,7 +155,9 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
     Expected:
 
     VERBOSE: Impersonating user DOMAIN\User
+   
     Hello from inside the encrypted script!
+   
     User running this script: User
 
 **🛡 Security Notes**
