@@ -57,13 +57,13 @@ Execution occurs under the impersonated identity using LogonUser + DuplicateToke
 
 **Cmdlets:**
 
-New-AesFile
+**New-AesFile**
 
     Encrypts a PowerShell script into a .aes file.
 
     New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
 
-New-AesKey
+**New-AesKey**
 
     Derives an AES key from a passphrase and random salt.
 
@@ -76,7 +76,7 @@ New-AesKey
         Salt = [byte[]]  # null unless -OutputSalt is used
     }
 
-New-RunAesFile
+**New-RunAesFile**
 
     Decrypts and executes an AES‑encrypted script entirely in memory.
 
@@ -102,7 +102,7 @@ New-RunAesFile
 
     Restores all registry values after execution
 
-End‑to‑End Test Flow (v7)
+**End‑to‑End Test Flow (v7)**
 
 1. Create a test script
 
@@ -170,6 +170,7 @@ End‑to‑End Test Flow (v7)
     HMAC verification prevents tampering.
 
     Credential AES files must contain:
+        
         username|password
 
     Use only in environments where impersonation is permitted.
