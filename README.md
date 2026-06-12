@@ -183,8 +183,6 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
   - Windows 10
   - Windows 11
 
----
-
 ## Versioning
 
 - **1.0.0.1** – Abandoned  
