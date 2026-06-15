@@ -1,16 +1,12 @@
-**AES Encryption & In‑Memory Execution for PowerShell 5.1**
-
-**Version 7.0.0.1**
-
+# AES Encryption & In‑Memory Execution for PowerShell 5.1
+## Version 7.1.0.2 — Ultra‑Minimal Invocation
 A compact, security‑focused toolkit for encrypting PowerShell scripts and executing them entirely in memory — without writing decrypted content to disk and without exposing code through default PowerShell logging.
 
 “Decrypt the file and execute along with dynamic parameters in memory without ever having to touch the disk.”
 
 Built for advanced PowerShell users who need controlled, tamper‑resistant, disk‑less execution.
 
-**Features**
-
-✔ AES‑256 encryption of PowerShell scripts
+**✔ AES‑256 encryption of PowerShell scripts**
     Scripts are encrypted into .aes files using:
 
     PBKDF2‑SHA256 key derivation
@@ -18,59 +14,72 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
     HMAC‑SHA256 integrity protection
     UTF‑8 stable encoding
 
-✔ In‑memory decryption & execution
-    The decrypted script never touches disk.
-    Execution is performed via System.Management.Automation.PowerShell.
+**✔ In‑memory decryption & execution**
+    Decrypted script never touches disk
 
-✔ Optional runtime parameters
-    Pass a hashtable of parameters directly into the decrypted script.
+    Execution performed via System.Management.Automation.PowerShell
 
-✔ Optional credential impersonation
+    Supports dynamic parameters via hashtable
 
-    Use:
+**✔ Optional credential impersonation**
+    Use either:
 
     -Credential (PSCredential), or
 
     -CredentialAesFile (AES‑encrypted username|password payload)
 
-    Execution occurs under the impersonated identity using LogonUser + DuplicateToken.
+    Execution occurs under the impersonated identity using:
+    LogonUser
+    DuplicateToken
+    WindowsIdentity.Impersonate()
 
-✔ Logging suppression (default)
-    To prevent decrypted script content from being logged, the module temporarily disables:
+**✔ Logging suppression (default)**
+    To prevent decrypted script content from being captured by PowerShell logging subsystems, the module temporarily disables:
 
-    Events and almost all PowerShell Logs.
-
+    ScriptBlockLogging
+    ScriptBlockInvocationLogging
+    ModuleLogging
+    Transcription policy auto‑start
     Use -PreservePSLogging to leave logging intact.
 
-✔ Tamper protection
+**✔ Ultra‑Minimal Invocation (v7.1.x)**
+    To minimize transcript exposure, the module executes scripts using:
+
+    Code:
     
+    $sb = { <script> }
+    & $sb
+    
+    Only the invocation (& $sb) appears in the transcript.
+
+**✔ Tamper protection**
     HMAC verification ensures the encrypted file has not been modified.
 
-**Cmdlets:**
-
-**New-AesFile**
-
+    Cmdlets:
+    New-AesFile
     Encrypts a PowerShell script into a .aes file.
 
+    Code:
     New-AesFile -InputFile <string> -Passphrase <string> [-OutputFile <string>] [-Force] [-Verbose]
-
-**New-AesKey**
-
+    
+    New-AesKey
     Derives an AES key from a passphrase and random salt.
 
+    Code
     New-AesKey -Passphrase <string> [-OutputSalt]
-
+    
     Outputs:
 
+    Code:
     @{
         Key  = [byte[]]
         Salt = [byte[]]  # null unless -OutputSalt is used
     }
 
-**New-RunAesFile**
-
+    New-RunAesFile
     Decrypts and executes an AES‑encrypted script entirely in memory.
 
+    Code:
     New-RunAesFile `
         -InputFile <string> `
         -Passphrase <string> `
@@ -78,116 +87,107 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
         [-Credential <pscredential>] `
         [-CredentialAesFile <string>] `
         [-PreservePSLogging] `
+        [-SilentOutput] `
         [-BasePath <string>] `
         [-Verbose]
-
+    
     Key behaviors:
 
     Decrypts [HMAC][Salt][IV][Ciphertext]
-
     Verifies HMAC before execution
-
-    Executes in current context or impersonated context
-
-    Suppresses logging unless -PreservePSLogging is specified
+    Executes in current or impersonated context
+    Suppresses logging unless -PreservePSLogging is used
+    Uses Ultra‑Minimal Invocation to reduce transcript exposure
 
 **End‑to‑End Test Flow (v7)**
-
-**1. Create a test script**
-
+1. Create a test script
+    powershell:
     "Hello from inside the encrypted script!"
     "User running this script: $([Environment]::UserName)"
 
     Save as TestScript.ps1.
 
-**3. Encrypt it**
-
+2. Encrypt it
+    Code:
     New-AesFile -InputFile .\TestScript.ps1 -Passphrase "P@ssw0rd!" -Verbose
-   
-    Produces TestScript.aes.
+    Produces: TestScript.aes.
 
-**5. Run with logging suppression (default)**
-
+3. Run with logging suppression (default)
+    Code:
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -Verbose
 
-    Expected:
+   Expected:
 
+    Code:
     VERBOSE: PowerShell logging disabled for secure execution.
-
     Hello from inside the encrypted script!
-
     User running this script: Ray
 
-**7. Run with logging preserved**
-
+4. Run with logging preserved
+    Code:
     New-RunAesFile -InputFile .\TestScript.aes -Passphrase "P@ssw0rd!" -PreservePSLogging -Verbose
 
-**8. Encrypt credentials**
+5. Encrypt credentials
+    Create creds.txt:
 
-   Create creds.txt:
-
+    Code:
     DOMAIN\User|SuperSecretPassword
 
     Encrypt:
 
+    Code:
     New-AesFile -InputFile .\creds.txt -Passphrase "P@ssw0rd!" -OutputFile .\Creds.aes
 
-**9. Run using encrypted credentials**
+6. Run using encrypted credentials
 
+   Code:
     New-RunAesFile `
-        -InputFile .\TestScript.aes `
+       -InputFile .\TestScript.aes `
         -Passphrase "P@ssw0rd!" `
         -CredentialAesFile .\Creds.aes `
         -Verbose
 
     Expected:
 
+    Code:
     VERBOSE: Impersonating user DOMAIN\User
-   
     Hello from inside the encrypted script!
-   
     User running this script: User
 
 **🛡 Security Notes**
     
-    Decrypted script content never touches disk.
+    Decrypted script content never touches disk
+    Logging suppression prevents decrypted script from appearing in:
+    ScriptBlockLogging
+    ModuleLogging
+    Transcription auto‑start
+    HMAC verification prevents tampering
+    Credential AES files must contain username|password
+    Use only in environments where impersonation is permitted
 
-    Logging suppression prevents script content from appearing in:
+**⚠ What This Module Cannot Prevent**
+    These limitations are inherent to PowerShell and apply to all PowerShell hosts.
 
-        Events and almost all PowerShell Logs
+    PowerShell transcription logs the command line  
+    If transcription is already active, PowerShell will always log:
 
-    HMAC verification prevents tampering.
+    Code:
+    $sb = { <script> }
+    & $sb
+    This is unavoidable.
 
-    Credential AES files must contain:
-        
-        username|password
+    PowerShell transcription logs script output  
+    Unless -SilentOutput is used.
 
-    Use only in environments where impersonation is permitted.
+    A user with administrative access can inspect memory  
+    True for any in‑memory decryption mechanism.
 
+    A compromised host cannot be secured by this module  
+    No encryption wrapper can protect a compromised machine.
 
-## ⚠ What This Module Cannot Prevent
-These limitations are inherent to PowerShell and apply to all PowerShell hosts.
-
-    1. PowerShell transcription logs the command line
-        If transcription is already active, PowerShell will always log:
-
-        $sb = { <script> }
-        & $sb
+**🧭 Summary**
     
-        The scriptblock content is visible in the assignment line.
-        This is unavoidable — PowerShell always logs the command text.
-
-    2. PowerShell transcription logs script output
-        Unless -SilentOutput is used, any output generated by the script will appear in the transcript.
-
-    3. A user with administrative access can inspect memory
-        This is true for any in‑memory decryption mechanism.
-
-    4. A compromised host cannot be secured by this module
-        If the machine is already compromised, no encryption wrapper can guarantee confidentiality.
-
-## 🧭 Summary
-This module provides strong protection for encrypted PowerShell scripts by preventing plaintext exposure through:
+    This module provides strong protection for encrypted PowerShell scripts by preventing plaintext exposure through:
 
     Disk writes
     ScriptBlockLogging
@@ -195,41 +195,38 @@ This module provides strong protection for encrypted PowerShell scripts by preve
     Transcription auto‑start
     Function‑definition echoing
     Invocation leakage
+    
+    However:
+    PowerShell transcription will always log the command line
+    Script output will always be logged unless suppressed
 
-However, PowerShell transcription will always log the command line, and script output will always be logged unless suppressed.
+    This is the maximum achievable security within the PowerShell execution model.
 
-This is the maximum achievable security within the PowerShell execution model.
+**Environment**
+    
+    Programming language
+    C# (.NET Framework 4.8.1)
 
-## Environment
+    Built with Visual Studio 2019
+    Windows PowerShell 5.1
 
-**Programming language**
+    Operating systems
+        Windows 10
+        Windows 11
 
-- C# (.NET Framework 4.8.1)
-- Built with Visual Studio 2019
+**Versioning**
+    
+    1.0.0.1 – Abandoned
+    2.0.0.1 – End of support
+    3.0.0.1 – End of support
+    4.0.0.1 – Stable
+    5.0.0.1 – Stable
+    6.0.0.1 – Stable
+    7.0.0.1 – Stable
+    7.1.0.2 – Current (Ultra‑Minimal Invocation)
 
-**PowerShell**
+**⚠ Disclaimer**
 
-- Windows PowerShell 5.1 (default on Windows 10/11)
-
-**Operating systems**
-
-- Tested on:
-  - Windows 10
-  - Windows 11
-
-## Versioning
-
-- **1.0.0.1** – Abandoned  
-- **2.0.0.1** – End of support  
-- **3.0.0.1** – End of support  
-- **4.0.0.1** – Stable  
-- **5.0.0.1** – Stable  
-- **6.0.0.1** – Stable  
-- **7.0.0.1** – Current
-
-## ⚠ Disclaimer
-
-**This software is provided “AS IS” with no warranties or support.**
-**Use at your own risk.**
-
-**Designed for advanced PowerShell users who understand the security implications.**
+    This software is provided “AS IS” with no warranties or support.
+    Use at your own risk.
+    Designed for advanced PowerShell users who understand the security implications.
