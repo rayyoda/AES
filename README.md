@@ -6,6 +6,10 @@ A compact, security‑focused toolkit for encrypting PowerShell scripts and exec
 
 Built for advanced PowerShell users who need controlled, tamper‑resistant, disk‑less execution.
 
+### Download only v7
+[Download v7 as ZIP](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/rayyoda/AES/tree/main/v7)
+
+
 **✔ AES‑256 encryption of PowerShell scripts**
     Scripts are encrypted into .aes files using:
 
