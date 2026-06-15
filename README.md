@@ -187,7 +187,8 @@ Built for advanced PowerShell users who need controlled, tamper‑resistant, dis
 
 **🧭 Summary**
     
-    This module provides strong protection for encrypted PowerShell scripts by preventing plaintext exposure through:
+    This module provides strong protection for encrypted PowerShell scripts by preventing 
+    plaintext exposure through:
 
     Disk writes
     ScriptBlockLogging
